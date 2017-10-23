@@ -45,6 +45,7 @@ int main(int argc, char *argv[])
     cctable[j][i]={cc,n-3.0};
     assignments.push_back(ud(mt));
   }
+  cerr << "read in correlation matrix" << endl;
   size_t s;
   double *scores = new double[d];
   double *sumwgt = new double[d];
