@@ -28,6 +28,18 @@ using std::swap;
 using std::unordered_map;
 using std::vector;
 
+double constexpr atanh_taylor13(
+    const double a){
+  double r = a;
+  const double a2=a*a;
+  double b = a;
+  for (size_t i=1;i!=7;++i){
+    b*=a2;
+    r+=b/(i*2+1);
+  }
+  return r;
+}
+
 int main(int argc, char *argv[])
 {
   vector<unordered_map<size_t,array<double,2>>> cctable;
@@ -40,23 +52,26 @@ int main(int argc, char *argv[])
     double cc;
     cin >> i >> j >> cc >> n ;
     if (i>j) swap(i,j);
-    if (j>=cctable.size()) cctable.resize(j);
-    cctable[i][j]={cc,n-3.0};
-    cctable[j][i]={cc,n-3.0};
-    assignments.push_back(ud(mt));
+    if (j>=cctable.size()) cctable.resize(j+1);
+    cctable[i][j]={{cc,double(n)-3.0}};
+    cctable[j][i]={{cc,double(n)-3.0}};
+    //cerr << i << " " << j << " " << cc << " " << n << endl;
   }
   cerr << "read in correlation matrix" << endl;
-  size_t s;
+  for (auto it=cctable.begin();it!=cctable.end();++it) assignments.push_back(ud(mt));
+  cerr << "random starting values assigned" << endl;
+  size_t s,c=0;
   double *scores = new double[d];
   double *sumwgt = new double[d];
   do{
     s=0;
+    ++c;
     for (size_t i=0;i!=assignments.size();++i){
-      cerr << i << endl;
+      //cerr << i << endl;
       std::fill(scores,scores+d,0);
       std::fill(sumwgt,sumwgt+d,0);
       for (auto it=cctable[i].begin();it!=cctable[i].end();++it){
-        scores[assignments[it->first]]+=it->second[0]*it->second[1];
+        scores[assignments[it->first]]+=atanh_taylor13(it->second[0])*it->second[1];
         sumwgt[assignments[it->first]]+=it->second[1];
       }
       size_t a = 0;
@@ -70,7 +85,9 @@ int main(int argc, char *argv[])
       s+=(assignments[i]!=a);
       assignments[i]=a;
     }
+    cerr << s << " new assignments in round " << c << endl;
   }while(s);
+  for (auto it=assignments.begin();it!=assignments.end();++it) cout << *it << endl;
   delete[] scores;
   delete[] sumwgt;
   return 0;
