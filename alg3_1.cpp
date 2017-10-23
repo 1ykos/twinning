@@ -30,7 +30,7 @@ using std::vector;
 
 int main(int argc, char *argv[])
 {
-  vector<unordered_map<size_t,array<double,2>>> cctable(N);
+  vector<unordered_map<size_t,array<double,2>>> cctable;
   vector<size_t> assignments;
   size_t d = (argc>1)?(std::stoi(argv[1])):2;
   std::mt19937_64 mt(std::random_device{}());
@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
     double cc;
     cin >> i >> j >> cc >> n ;
     if (i>j) swap(i,j);
+    if (j>=cctable.size()) cctable.resize(j);
     cctable[i][j]={cc,n-3.0};
     cctable[j][i]={cc,n-3.0};
     assignments.push_back(ud(mt));
