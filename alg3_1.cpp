@@ -55,8 +55,8 @@ int main(int argc, char *argv[])
       std::fill(scores,scores+d,0);
       std::fill(sumwgt,sumwgt+d,0);
       for (auto it=cctable[i].begin();it!=cctable[i].end();++it){
-        scores[assignments[it->first]]+=it->second()[0]*it->second()[1];
-        sumwgt[assignments[it->first]]+=it->second()[1];
+        scores[assignments[it->first]]+=it->second[0]*it->second[1];
+        sumwgt[assignments[it->first]]+=it->second[1];
       }
       size_t a = 0;
       double min=scores[0]/sumwgt[0];
