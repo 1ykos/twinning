@@ -1,4 +1,4 @@
-/* Copyright (c) Wolfgang Brehm 2017, Greta Assmann 2016                     */
+/* Copyright (c) Wolfgang Brehm 2017                                         */
 /* This is Alg2.1 for detwinning computationally twinned diffraction         */
 /* All rights reserved                                                       */
 
